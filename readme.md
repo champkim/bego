@@ -1,6 +1,6 @@
 <img src="icon.png" align="right" />
 
-# go backend test [![go](https://en.wikipedia.org/wiki/Go_%28programming_language%29#/media/File:Go_Logo_Blue.svg)](https://go.dev/)
+# go backend test [![go](https://www.freecodecamp.org/news/content/images/size/w2000/2021/10/golang.png)](https://go.dev/)
 
 > start go backend
 
