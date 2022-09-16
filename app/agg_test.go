@@ -15,7 +15,7 @@ import (
 func TestPages_CRU(t *testing.T) {
 	
 	assert := assert.New(t)
-	ah := MakeHandler("./test.db")
+	ah := MakeHandler("host=127.0.0.1 user=ontune password=ontune dbname=ontune port=5432 sslmode=disable TimeZone=Asia/Seoul")
 	defer ah.Close()
 
 	ts := httptest.NewServer(ah)

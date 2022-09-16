@@ -75,11 +75,19 @@ func (a *AppHandler) addPageHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}		
 	//log.Println("test  >>> " + strconv.Itoa( page.Index) + " " + page.Contents)		
+	var errNum int = 0 
 	for _, p := range pages {		
-		a.db.AddPage(p)	
+		if !a.db.AddPage(p)	{
+			errNum++
+		}
 	}
 
-	rd.JSON(w, http.StatusCreated, pages)
+	if errNum == 0 {
+		rd.JSON(w, http.StatusCreated, pages) 
+	} else {
+		rd.JSON(w, http.StatusBadRequest, nil)
+	}
+	//rd.JSON(w, http.StatusCreated, pages)
 }
 
 func (a *AppHandler) UpdatePageHandler(w http.ResponseWriter, r *http.Request) {

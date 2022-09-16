@@ -15,11 +15,11 @@ func (m *memHandler)GetPages() []*Page {
 	return list
 }
 
-func (m *memHandler)AddPage(page *Page) *Page {	
+func (m *memHandler)AddPage(page *Page) bool {	
 	//page := &Page{index, contents, time.Now()}
 	page.UpdatedAt = time.Now()
 	m.pageMap[page.Index] = page
-	return page
+	return true
 }	
 
 func (m *memHandler)UpdatePage(page *Page) bool {
