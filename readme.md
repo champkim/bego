@@ -8,9 +8,9 @@ I will fill in the future.
 모자이크 화면의 배열 정보를 저장 하고 업데이트 한다.
 
 ## Environment
-go lang 
-windows11
-vscode 
+* go lang 
+* windows11
+* vscode 
 
 ## Prerequisite
 
