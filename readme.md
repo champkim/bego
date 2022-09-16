@@ -1,5 +1,3 @@
-<img src="icon.png" align="right" />
-
 # go backend test [![go](https://miro.medium.com/max/700/1*Ifpd_HtDiK9u6h68SZgNuA.png)](https://go.dev/)
 
 > start go backend
