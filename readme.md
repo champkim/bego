@@ -14,13 +14,39 @@ I will fill in the future.
 
 ## Prerequisite
 
-* [gorilla mux](https://github.com/gorilla/mux)
-* [unrolled-render](https://https://github.com/unrolled/render)
-* [postgresq db](https://https://github.com/lib/pq)
+* [[router and dispatcher] gorilla mux](https://github.com/gorilla/mux)
+* [[render] unrolled](https://github.com/unrolled/render)
+* [[lib] negroni](https://github.com/urfave/negroni)
 
+* [[db] postgresq](https://https://github.com/lib/pq)
+
+* [[tdd] goconvey](https://https://github.com/smartystreets/goconvey)
+* [[tdd] assert](https://https://github.com/stretchr/testify/tree/master/assert)
 
 ## Files
-* 이 항목은 내가 추가한 것이다. 중요한 코드 파일들 몇 개를 대상으로 해당 파일이 어떠한 역할을 하는 파일인지를 간단히 설명해주면 전반적인 맥락을 파악하기에 좋을 것 같아 추가하였다.
+* pages.go 
+```
+type DBHandler interface {
+	GetPages() []*Page
+	AddPage(page *Page) bool	
+	UpdatePage(page *Page) bool		
+	GetPage(index int) *Page
+	DeletePage() bool
+	Close()
+}
+
+func NewDBHandler(dbConn string) DBHandler {
+	//return newMemHandler()
+	//return newSqliteHandler(filepath)
+	return newPgHandler(dbConn)
+}
+```
+* 원하는 저장소 memory, db, file 등에 대하여 DBHandler interface 를 구현하면  다른 소스파일에 영향 없이 Adapter 처럼 변경 사용 가능 합니다.
+  (memHandler.go, pgHandler.go) 
 ## Usage
-* 작성한 코드를 어떻게 실행해야 하는지에 대한 가이드라인이다. Usage Example을 함께 작성하면 좋다.
-이 외에도 라이센스, contributing 같은 것들도 있지만 처음부터 readme를 복잡하게 작성하기 보단 프로젝트의 규모가 커지면서 디테일하게 추가하며 다듬는 것이 좋다.
+* tdd
+```
+\bego\app>goconvey      
+
+\bego\app>go test
+```
