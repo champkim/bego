@@ -15,14 +15,20 @@ import (
 func TestPages_CRU(t *testing.T) {
 	
 	assert := assert.New(t)
-	ah := MakeHandler("./test.db")
+	ah := MakeHandler("host=127.0.0.1 user=ontune password=ontune dbname=ontune port=5432 sslmode=disable TimeZone=Asia/Seoul")
 	defer ah.Close()
 
 	ts := httptest.NewServer(ah)
 	defer ts.Close()
 
+	//Delete 테스트 
+	req, _ := http.NewRequest("DELETE", ts.URL+"/pages", nil) 
+	resp, err := http.DefaultClient.Do(req)
+	assert.NoError(err)
+	assert.Equal(http.StatusOK, resp.StatusCode)
+
 	//post isnert 2 Pages 
-	resp, err := http.Post(ts.URL +"/pages", "application/json", 
+	resp, err = http.Post(ts.URL +"/pages", "application/json", 
 	  strings.NewReader(`[{"index": 0,"contents": "first,second,first"},{"index": 2,"contents": "first,second,first,second"}]`))
 	assert.NoError(err)
 	assert.Equal(http.StatusCreated, resp.StatusCode)	
@@ -46,7 +52,7 @@ func TestPages_CRU(t *testing.T) {
 	}
 
 	//put upate 2 Pages 	
-	req, _ := http.NewRequest("PUT", ts.URL + "/pages", 
+	req, _ = http.NewRequest("PUT", ts.URL + "/pages", 
 	strings.NewReader(`[{"index": 0,"contents": "first"},{"index": 2,"contents": "first,second"}]`)) //PUT 는 많이 사용하지 않아 따로 요청을 만들어 줘야한다. NewRequest
   	resp, err = http.DefaultClient.Do(req)  
 	assert.NoError(err)

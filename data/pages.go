@@ -10,15 +10,16 @@ type Page struct {
 
 type DBHandler interface {
 	GetPages() []*Page
-	AddPage(page *Page) *Page	
-	UpdatePage(page *Page) bool	
+	AddPage(page *Page) bool	
+	UpdatePage(page *Page) bool		
 	GetPage(index int) *Page
+	DeletePage() bool
 	Close()
 }
 
 func NewDBHandler(dbConn string) DBHandler {
-	return newMemHandler()
+	//return newMemHandler()
 	//return newSqliteHandler(filepath)
-	//return newPgHandler(dbConn)
+	return newPgHandler(dbConn)
 }
 

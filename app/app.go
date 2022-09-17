@@ -75,11 +75,19 @@ func (a *AppHandler) addPageHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}		
 	//log.Println("test  >>> " + strconv.Itoa( page.Index) + " " + page.Contents)		
+	var errNum int = 0 
 	for _, p := range pages {		
-		a.db.AddPage(p)	
+		if !a.db.AddPage(p)	{
+			errNum++
+		}
 	}
 
-	rd.JSON(w, http.StatusCreated, pages)
+	if errNum == 0 {
+		rd.JSON(w, http.StatusCreated, pages) 
+	} else {
+		rd.JSON(w, http.StatusBadRequest, nil)
+	}
+	//rd.JSON(w, http.StatusCreated, pages)
 }
 
 func (a *AppHandler) UpdatePageHandler(w http.ResponseWriter, r *http.Request) {
@@ -123,8 +131,17 @@ func (a *AppHandler) GetPageHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func (a *AppHandler) DeletePageHandler(w http.ResponseWriter, r *http.Request) {
+	ok := a.db.DeletePage()
+	if ok  {		
+		rd.JSON(w, http.StatusOK, nil) 
+	} else {
+		rd.JSON(w, http.StatusBadRequest, nil)		
+	}
+}
+
 func (a *AppHandler) Close() {
-	a.db.Close()
+	a.db.Close()	
 }
 
 //func MakeHandler() http.Handler {
@@ -140,6 +157,7 @@ func MakeHandler(dbConn string) *AppHandler {
 	mux.HandleFunc("/pages", a.getPagesHandler).Methods("GET")
 	mux.HandleFunc("/pages", a.addPageHandler).Methods("POST")
 	mux.HandleFunc("/pages", a.UpdatePageHandler).Methods("PUT")
+	mux.HandleFunc("/pages", a.DeletePageHandler).Methods("DELETE")
 	mux.HandleFunc("/pages/{id:[0-9]+}", a.GetPageHandler).Methods("GET")	
 	mux.HandleFunc("/", a.indexHandler)
 
