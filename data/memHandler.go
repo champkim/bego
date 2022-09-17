@@ -41,6 +41,10 @@ func (m *memHandler)GetPage(index int) *Page {
 	return nil		
 }
 
+func (m *memHandler)DeletePage() bool {
+	return true
+}
+
 func (m *memHandler)Close() {
 
 }

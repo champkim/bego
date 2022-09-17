@@ -131,8 +131,17 @@ func (a *AppHandler) GetPageHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func (a *AppHandler) DeletePageHandler(w http.ResponseWriter, r *http.Request) {
+	ok := a.db.DeletePage()
+	if ok  {		
+		rd.JSON(w, http.StatusOK, nil) 
+	} else {
+		rd.JSON(w, http.StatusBadRequest, nil)		
+	}
+}
+
 func (a *AppHandler) Close() {
-	a.db.Close()
+	a.db.Close()	
 }
 
 //func MakeHandler() http.Handler {
@@ -148,6 +157,7 @@ func MakeHandler(dbConn string) *AppHandler {
 	mux.HandleFunc("/pages", a.getPagesHandler).Methods("GET")
 	mux.HandleFunc("/pages", a.addPageHandler).Methods("POST")
 	mux.HandleFunc("/pages", a.UpdatePageHandler).Methods("PUT")
+	mux.HandleFunc("/pages", a.DeletePageHandler).Methods("DELETE")
 	mux.HandleFunc("/pages/{id:[0-9]+}", a.GetPageHandler).Methods("GET")	
 	mux.HandleFunc("/", a.indexHandler)
 

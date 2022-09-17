@@ -11,8 +11,9 @@ type Page struct {
 type DBHandler interface {
 	GetPages() []*Page
 	AddPage(page *Page) bool	
-	UpdatePage(page *Page) bool	
+	UpdatePage(page *Page) bool		
 	GetPage(index int) *Page
+	DeletePage() bool
 	Close()
 }
 
