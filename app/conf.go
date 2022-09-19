@@ -1,6 +1,12 @@
 package app
 
-import "fmt"
+import (
+	"fmt"
+	"log"
+	"os"
+
+	"github.com/joho/godotenv"
+)
 
 type DBInfo struct {
 	Host string
@@ -11,27 +17,28 @@ type DBInfo struct {
 }
 
 // Rectangle 를 반환하는 함수를 만들었다.
-func CreateDBInfo() *DBInfo {
+func CreateDBInfo(envfilepath string) *DBInfo {
 	//db := DBInfo{}
 	db := new(DBInfo)
-	db.LoadDBConf()
+	db.loadDBConf(envfilepath)
 	return db
 	//return &db
 }
 
-func (db *DBInfo) LoadDBConf() {
-	db.Host = "127.0.0.1"
-	db.Port = "5432"
-	db.User = "ontune"
-	db.Pwd = "ontune"
-	db.DB = "ontune"
-	// dbInfo := &DBInfo{      // 값 설정
-	//     Host: "127.0.0.1",
-	// 	Port: "5432",
-	// 	User: "ontune",
-	// 	Pwd: "ontune",
-	// 	DB: "ontune",
-	// }
+func (db *DBInfo) loadDBConf(envfilepath string) {
+
+	err := godotenv.Load(envfilepath)
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+	
+	db.Host = os.Getenv("Host")
+	db.Port = os.Getenv("Port")
+	db.User = os.Getenv("User")
+	db.Pwd = os.Getenv("Pwd")
+	db.DB = os.Getenv("DB")
+
+	log.Println(db.GetDBConnString())	
 }
 
 func (db *DBInfo) GetDBConnString() string {

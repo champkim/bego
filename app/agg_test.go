@@ -15,7 +15,7 @@ import (
 func TestPages_CRU(t *testing.T) {
 	
 	assert := assert.New(t)
-	ah := MakeHandler(CreateDBInfo().GetDBConnString())
+	ah := MakeHandler(CreateDBInfo("../server.env").GetDBConnString())
 	defer ah.Close()
 
 	ts := httptest.NewServer(ah)

@@ -13,10 +13,10 @@ import (
 func main() {
 	
 
-	dbInfo := CreateDBInfo()
+	//dbInfo := app.CreateDBInfo()
 	//mux := app.MakeHandler("./test.db") //flag.Args 이런걸로 사용하자. 설정인자는 최대한 바깥으로 빼자
 	//os.Getenv("DATABASE_URL")
-	mux := app.MakeHandler(dbConn)
+	mux := app.MakeHandler(app.CreateDBInfo("server.env").GetDBConnString())
 	defer mux.Close() //finally 개념
 
 	ngri := negroni.Classic()
