@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestPages_CRU(t *testing.T) {
+func TestPages_CRUD(t *testing.T) {
 	
 	assert := assert.New(t)
 	ah := MakeHandler(CreateDBInfo("../server.env").GetDBConnString())
