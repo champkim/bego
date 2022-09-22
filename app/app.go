@@ -8,6 +8,7 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 	"github.com/unrolled/render"
 )
 
@@ -144,15 +145,40 @@ func (a *AppHandler) Close() {
 	a.db.Close()	
 }
 
+// func corsMiddleware(next http.Handler) http.Handler {
+// 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+// 			w.Header().Set("Access-Control-Allow-Origin", "*")                                                            			       
+// 			w.Header().Add("Access-Control-Allow-Headers", "Content-Type,AccessToken,X-CSRF-Token, Authorization, Token") 			       
+// 			w.Header().Add("Access-Control-Allow-Credentials", "true")                                                    
+// 			w.Header().Add("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+// 		    w.Header().Add("Access-Control-Expose-Headers", "Origin,  X-Auth-Token, Authorization, Content-Length, Access-Control-Allow-Origin, Access-Control-Allow-Headers, Content-Type")	  			                                                
+// 			w.Header().Set("content-type", "application/json;charset=UTF-8")
+									
+// 			if r.Method == "OPTIONS" {
+// 					w.WriteHeader(http.StatusNoContent)
+// 					return
+// 			}
+// 			next.ServeHTTP(w, r)
+// 	})
+// }
+
 //func MakeHandler() http.Handler {
 func MakeHandler(dbConn string) *AppHandler {	
 
 	mux := mux.NewRouter()
-	a := &AppHandler{
-		Handler: mux,
-		db: data.NewDBHandler(dbConn),
-	}
+	//mux.Use(corsMiddleware)
 
+	c := cors.New(cors.Options{
+		AllowedHeaders:[]string{"*"}, 		
+		AllowedOrigins:[]string{"*"}, 		
+		AllowCredentials: true,
+		AllowedMethods: []string{"GET", "DELETE", "POST", "PUT"},		
+	})
+
+	a := &AppHandler{
+		Handler: c.Handler(mux),
+		db: data.NewDBHandler(dbConn),		
+	}
 	
 	mux.HandleFunc("/pages", a.getPagesHandler).Methods("GET")
 	mux.HandleFunc("/pages", a.addPageHandler).Methods("POST")
@@ -160,6 +186,6 @@ func MakeHandler(dbConn string) *AppHandler {
 	mux.HandleFunc("/pages", a.DeletePageHandler).Methods("DELETE")
 	mux.HandleFunc("/pages/{id:[0-9]+}", a.GetPageHandler).Methods("GET")	
 	mux.HandleFunc("/", a.indexHandler)
-
+					
 	return a
 }
