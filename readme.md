@@ -18,6 +18,8 @@ I will fill in the future.
 * [[render] unrolled](https://github.com/unrolled/render)
 * [[lib] negroni](https://github.com/urfave/negroni)
 
+* [[.env] godotenv](https://github.com/joho/godotenv)
+
 * [[db] postgresq](https://https://github.com/lib/pq)
 
 * [[tdd] goconvey](https://https://github.com/smartystreets/goconvey)
