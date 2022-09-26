@@ -21,7 +21,7 @@ I will fill in the future.
 
 * [[.env] godotenv](https://github.com/joho/godotenv)
 
-* [[db] postgresq](https://https://github.com/lib/pq)
+* [[db] postgresq](https://github.com/lib/pq)
 
 * [[tdd] goconvey](https://https://github.com/smartystreets/goconvey)
 * [[tdd] assert](https://https://github.com/stretchr/testify/tree/master/assert)
