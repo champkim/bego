@@ -5,7 +5,7 @@
 I will fill in the future.
 
 ## Description
-모자이크 화면의 배열 정보를 저장 하고 업데이트 한다.
+모자이크 화면의 데이터 정보를 저장 하고 업데이트 한다.
 
 ## Environment
 * go lang 
