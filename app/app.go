@@ -171,8 +171,8 @@ func MakeHandler(dbConn string) *AppHandler {
 	c := cors.New(cors.Options{
 		AllowedHeaders:[]string{"*"}, 		
 		AllowedOrigins:[]string{"*"}, 		
-		AllowCredentials: true,
-		AllowedMethods: []string{"GET", "DELETE", "POST", "PUT"},		
+		AllowCredentials: false,		
+		AllowedMethods: []string{"GET", "DELETE", "POST", "PUT", "OPTIONS"},		
 	})
 
 	a := &AppHandler{
