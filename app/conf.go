@@ -14,6 +14,7 @@ type DBInfo struct {
 	User string
 	Pwd  string
 	DB   string
+	WPort string
 }
 
 // Rectangle 를 반환하는 함수를 만들었다.
@@ -37,6 +38,7 @@ func (db *DBInfo) loadDBConf(envfilepath string) {
 	db.User = os.Getenv("User")
 	db.Pwd = os.Getenv("Pwd")
 	db.DB = os.Getenv("DB")
+	db.WPort = os.Getenv("WPort")
 
 	log.Println(db.GetDBConnString())	
 }
