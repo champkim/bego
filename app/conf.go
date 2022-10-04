@@ -9,12 +9,12 @@ import (
 )
 
 type DBInfo struct {
-	Host string
-	Port string
-	User string
-	Pwd  string
-	DB   string
-	WPort string
+	host string
+	port string
+	user string
+	pwd  string
+	dbname   string
+	wPort string
 }
 
 // Rectangle 를 반환하는 함수를 만들었다.
@@ -45,5 +45,9 @@ func (db *DBInfo) loadDBConf(envfilepath string) {
 
 func (db *DBInfo) GetDBConnString() string {
 	return fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Seoul",
-		db.Host, db.User, db.Pwd, db.DB, db.Port)
+		db.host, db.user, db.pwd, db.dbname, db.port)
+}
+
+func (db *DBInfo) GetWPort() string {
+	return db.wPort
 }
