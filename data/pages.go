@@ -1,6 +1,9 @@
 package data
 
-import "time"
+import (
+	"bego/conf"
+	"time"
+)
 
 type Page struct {
 	Index     int       `json:"index"`
@@ -17,9 +20,9 @@ type DBHandler interface {
 	Close()
 }
 
-func NewDBHandler(dbConn string) DBHandler {
+func NewDBHandler(sconf *conf.ServerConf) DBHandler {
 	//return newMemHandler()
 	//return newSqliteHandler(filepath)
-	return newPgHandler(dbConn)
+	return newPgHandler(sconf)
 }
 

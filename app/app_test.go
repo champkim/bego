@@ -1,6 +1,7 @@
 package app
 
 import (
+	"bego/conf"
 	"bego/data"
 	"encoding/json"
 	"fmt"
@@ -15,7 +16,7 @@ import (
 func TestPages_CRUD(t *testing.T) {
 	
 	assert := assert.New(t)
-	ah := MakeHandler(CreateDBInfo("../server.env").GetDBConnString())
+	ah := MakeHandler(conf.CreateServerConf("../server.env"))
 	defer ah.Close()
 
 	ts := httptest.NewServer(ah)
@@ -104,4 +105,20 @@ func TestPages_CRUD(t *testing.T) {
 	resp, err = http.Get(ts.URL + "/pages/1")
 	assert.NoError(err)
 	assert.Equal(http.StatusBadRequest, resp.StatusCode)			
+}
+
+func TestCreateServerConf(t *testing.T) {
+	assert := assert.New(t)
+
+	var env, env2 *conf.ServerConf 
+	env = conf.CreateServerConf("../server.env");	
+	env2 = conf.CreateServerConf("../server.env");	
+	//assert.NotEqual(1, 2)	
+	//fmt.Println(env.Get())
+	//fmt.Println(env2.Get())
+	// assert.Equal(env.Get(), 2)
+	// assert.Equal(env2.Get(), 2)
+	fmt.Println(env)
+	fmt.Println(env2)
+	assert.Equal(env, env2)		
 }

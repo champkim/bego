@@ -1,6 +1,7 @@
 package app
 
 import (
+	"bego/conf"
 	"bego/data"
 	"encoding/json"
 	"fmt"
@@ -163,7 +164,7 @@ func (a *AppHandler) Close() {
 // }
 
 //func MakeHandler() http.Handler {
-func MakeHandler(dbConn string) *AppHandler {	
+func MakeHandler(sconf *conf.ServerConf) *AppHandler {	
 
 	mux := mux.NewRouter()
 	//mux.Use(corsMiddleware)
@@ -177,7 +178,7 @@ func MakeHandler(dbConn string) *AppHandler {
 
 	a := &AppHandler{
 		Handler: c.Handler(mux),
-		db: data.NewDBHandler(dbConn),		
+		db: data.NewDBHandler(sconf),		
 	}
 	
 	mux.HandleFunc("/pages", a.getPagesHandler).Methods("GET")
