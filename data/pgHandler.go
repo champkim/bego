@@ -2,6 +2,7 @@ package data
 
 import (
 	"bego/conf"
+	"bego/logger"
 	"database/sql" //모든 sql 에 공통되는 interface ,
 	"time"
 
@@ -18,7 +19,7 @@ func (p *pgHandler)GetPages() []*Page {
 
 	rows, err := p.db.Query("SELECT pageindex, contents, updatedat FROM pages")
 	if err != nil {		
-		conf.WriteDBErr(err)
+		logger.Error(err.Error())				
 	}
 	defer rows.Close() //function 이 종료 되기전에 rows 를 Close 시켜라 
 
@@ -34,12 +35,12 @@ func (p *pgHandler)GetPages() []*Page {
 func (p *pgHandler)AddPage(page *Page) bool {	
 	stmt, err := p.db.Prepare("INSERT INTO pages (pageindex, contents, updatedat) VALUES ($1, $2, NOW())")		
 	if err != nil {
-		conf.WriteDBErr(err)
+		logger.Error(err.Error())				
 	}	
 	
  	rst, err := stmt.Exec(page.Index, page.Contents)
 		if err != nil {
-			conf.WriteDBErr(err)
+			logger.Error(err.Error())				
 	}
 	
 	page.UpdatedAt = time.Now() 
@@ -51,11 +52,11 @@ func (p *pgHandler)UpdatePage(page *Page) bool {
 
 	stmt, err := p.db.Prepare("UPDATE pages SET contents=$1, updatedat=NOW() WHERE pageindex=$2")	
 	if err != nil {
-		conf.WriteDBErr(err)
+		logger.Error(err.Error())				
 	}	
  	rst, err := stmt.Exec(page.Contents, page.Index)
 		if err != nil {
-			conf.WriteDBErr(err)
+			logger.Error(err.Error())				
 	}
 		
 	page.UpdatedAt = time.Now() 
@@ -67,7 +68,7 @@ func (p *pgHandler)GetPage(index int) *Page {
 	
 	rows, err := p.db.Query("SELECT pageindex, contents, updatedat FROM pages WHERE pageindex=$1", index)	
 	if err != nil {
-		conf.WriteDBErr(err)
+		logger.Error(err.Error())				
 	}
 	defer rows.Close() //function 이 종료 되기전에 rows 를 Close 시켜라 
 	//log.Println(">>>>>>>>>> pageindex >>>>>> " +  strconv.Itoa(index))			
@@ -84,12 +85,12 @@ func (p *pgHandler)DeletePage() bool {
 
 	stmt, err := p.db.Prepare("DELETE FROM pages")	
 	if err != nil {
-		conf.WriteDBErr(err)
+		logger.Error(err.Error())				
 	}
 
  	rst, err := stmt.Exec()
 	if err != nil {
-		conf.WriteDBErr(err)
+		logger.Error(err.Error())				
 	}	
 	cnt, _ := rst.RowsAffected()
 	//return true
@@ -103,12 +104,12 @@ func (p *pgHandler)Close() {
 func newPgHandler(sconf *conf.ServerConf) DBHandler {
 	db, err := sql.Open("postgres", sconf.GetDBConnString())
 	if err != nil {
-		conf.WriteDBErr(err)
+		logger.Error(err.Error())				
 	}	
 
 	db.SetMaxIdleConns(sconf.GetDBMaxIdleConns())
 	db.SetMaxOpenConns(sconf.GetDBMaxOpenConns())
-	db.SetConnMaxLifetime(time.Duration(sconf.GetDBConnMaxLifetime()))
+	//db.SetConnMaxLifetime(time.Duration(sconf.GetDBConnMaxLifetime()))
 
 	statement, err := db.Prepare(
 		`CREATE TABLE IF NOT EXISTS pages (
@@ -118,12 +119,12 @@ func newPgHandler(sconf *conf.ServerConf) DBHandler {
 		)`)
 
 	if err != nil {
-		conf.WriteDBErr(err)
+		logger.Error(err.Error())				
 	}
 
 	_, err = statement.Exec()
 	if err != nil {
-		conf.WriteDBErr(err)
+		logger.Error(err.Error())				
 	}
 		
 	return &pgHandler{db: db}	

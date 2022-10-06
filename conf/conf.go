@@ -1,6 +1,7 @@
 package conf
 
 import (
+	"bego/logger"
 	"fmt"
 	"log"
 	"os"
@@ -64,22 +65,23 @@ func (sconf *ServerConf) loadServerConf(envfilepath string) {
 	sconf.dbuser = os.Getenv("DBUser")
 	sconf.dbpwd = os.Getenv("DBPwd")
 	sconf.dbname = os.Getenv("DBName")
+	sconf.wPort = os.Getenv("WPort")
 	
 	sconf.dbMaxIdleConns, err = strconv.Atoi(os.Getenv("DBMaxIdleConns"))
-	if err != nil {
-		log.Fatal(err)
+	if err != nil {		
+		logger.Error(err.Error())
 		sconf.dbMaxIdleConns =2		
 	}
 
 	sconf.dbMaxOpenConns, err = strconv.Atoi(os.Getenv("DBMaxOpenConns"))
 	if err != nil {
-		log.Fatal(err)
+		logger.Error(err.Error())
 		sconf.dbMaxOpenConns =2		
 	}
 	
 	sconf.dbConnMaxLifetime, err = strconv.Atoi(os.Getenv("DBConnMaxLifetime"))
 	if err != nil {
-		log.Fatal(err)
+		logger.Error(err.Error())
 		sconf.dbConnMaxLifetime = 5
 	}
 

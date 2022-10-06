@@ -3,6 +3,7 @@ package main
 import (
 	"bego/app"
 	"bego/conf"
+	"bego/logger"
 	"log"
 	"net/http"
 
@@ -11,8 +12,7 @@ import (
 
 
 
-func main() {
-	
+func main() {	
 
 	//dbInfo := app.CreateDBInfo()
 	//mux := app.MakeHandler("./test.db") //flag.Args 이런걸로 사용하자. 설정인자는 최대한 바깥으로 빼자
@@ -24,9 +24,10 @@ func main() {
 	ngri := negroni.Classic()
 	ngri.UseHandler(mux)	
 
-	log.Println("Started App")
+	//log.Println("Started App")
+	logger.Info("Started App")
 	err := http.ListenAndServe(":" + sconf.GetWPort(), ngri)
-	if err != nil {
+	if err != nil {				
 		log.Fatal(err)
 		panic(err)
 	}
